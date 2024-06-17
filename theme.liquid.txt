@@ -1,0 +1,65 @@
+    <!-- GET 10% OFF btn script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const floatingButton = document.getElementById("floating-button");
+    const closeFloatingButton = document.getElementById("close-floating-button");
+
+    let closeCount = parseInt(localStorage.getItem("floatingButtonCloseCount") || 0, 10);
+
+    // Check the close count and hide the button if it has been closed twice
+    if (closeCount >= 5) {
+        floatingButton.style.display = "none";
+    } else {
+        floatingButton.style.display = "flex";
+    }
+
+    // Function to detect if the user is on a mobile device
+    function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
+
+    // Function to show the Klaviyo popup
+    function showKlaviyoPopup() {
+        console.log("Trying to show Klaviyo popup...");
+        if (typeof window._klOnsite !== 'undefined' && window._klOnsite.push) {
+            if (isMobileDevice()) {
+                console.log('Triggering mobile Klaviyo popup...');
+                window._klOnsite.push(['openForm', '*ENTER KLAVIYO POPUP ID*']); // Mobile form ID
+            } else {
+                console.log('Triggering desktop Klaviyo popup...');
+                window._klOnsite.push(['openForm', '*ENTER KLAVIYO POPUP ID*']); // Desktop form ID
+            }
+        } else {
+            console.error('Klaviyo script not loaded.');
+        }
+    }
+
+    // Event listener for the floating button click
+    floatingButton.addEventListener("click", function (event) {
+        if (event.target !== closeFloatingButton) {
+            showKlaviyoPopup();
+        }
+    });
+
+    // Event listener for the close button
+    closeFloatingButton.addEventListener("click", function (event) {
+        closeCount++;
+        localStorage.setItem("floatingButtonCloseCount", closeCount);
+        floatingButton.style.display = "none";
+        event.stopPropagation();
+    });
+});
+</script>
+ 
+    <!-- END of GET 10% OFF btn script -->
+
+
+
+    <!-- GET 10% OFF btn html -->
+<!-- <div id="floating-button" class="floating-button">
+  SPECIAL OFFERS
+  <span id="close-floating-button" class="close-floating-button">&times;</span>
+</div> -->
+
+
+    <!-- END of GET 10% OFF btn html -->
